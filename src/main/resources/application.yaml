@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: github-concat
+
+gg:
+  jte:
+    developmentMode: true
+
+github:
+  token: ${GITHUB_TOKEN}
+  includePatterns:
+    - "**/*.md"
+    - "**/*.txt"
+    - "**/*.xml"
+    - "**/*.java"
+    - "**/*.jte"
+    - "**/*.yaml"
+    - "**/*.yml"
+    - "**/*.graphqls"
+  excludePatterns:
+    - ".mvn/**"
+    - ".idea/**"
+    - "target/**"
+    - ".gitignore"
+    - ".gitattributes"
+    - "mvnw"
+    - "mvnw.cmd"
