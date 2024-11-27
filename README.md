@@ -1,8 +1,12 @@
-# GitHub Repository Content Concatenator
+# Repository Content Generator
 
 A Spring Boot web application that fetches and concatenates repository content from GitHub. This tool helps developers quickly view and aggregate content from multiple files in a GitHub repository, making it easier to analyze codebases and generate documentation.
 
 ![GitHub Repo Concatenator](./images/gh_concat.png)
+
+You can also select files from a local directory if you're running this on your local machine
+
+![Local Directory](./images/local_dir.png)
 
 ## Features
 
