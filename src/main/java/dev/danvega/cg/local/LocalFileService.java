@@ -1,4 +1,4 @@
-package dev.danvega.cg;
+package dev.danvega.cg.local;
 
 import dev.danvega.cg.gh.GitHubConfiguration;
 import org.slf4j.Logger;

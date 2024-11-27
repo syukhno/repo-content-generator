@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>dev.danvega</groupId>
-	<artifactId>github-concat</artifactId>
+	<artifactId>repo-content-generator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>github-concat</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Repository Content Generator</name>
+	<description>Generate LLM friendly document from a repository</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -54,6 +54,15 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.graalvm.buildtools</groupId>
+				<artifactId>native-maven-plugin</artifactId>
+				<configuration>
+					<buildArgs>
+						<buildArg>--initialize-at-build-time=org.springframework.util.ResourceUtils</buildArg>
+					</buildArgs>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>gg.jte</groupId>
 				<artifactId>jte-maven-plugin</artifactId>

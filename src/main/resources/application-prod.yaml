@@ -1,0 +1,9 @@
+
+gg:
+  jte:
+    usePrecompiledTemplates: true
+    developmentMode: false
+
+logging:
+  level:
+    root: debug

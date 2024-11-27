@@ -1,10 +1,14 @@
 spring:
   application:
-    name: content-generator
+    name: repo-content-generator
 
 gg:
   jte:
     developmentMode: true
+
+app:
+  output:
+    directory: output
 
 github:
   token: ${GITHUB_TOKEN}
