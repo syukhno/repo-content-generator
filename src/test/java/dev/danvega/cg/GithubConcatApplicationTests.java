@@ -1,4 +1,4 @@
-package dev.danvega.gh;
+package dev.danvega.cg;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

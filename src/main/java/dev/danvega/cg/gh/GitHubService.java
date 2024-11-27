@@ -1,4 +1,4 @@
-package dev.danvega.gh;
+package dev.danvega.cg.gh;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

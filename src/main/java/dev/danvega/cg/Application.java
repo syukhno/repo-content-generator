@@ -1,5 +1,6 @@
-package dev.danvega.gh;
+package dev.danvega.cg;
 
+import dev.danvega.cg.gh.GitHubConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

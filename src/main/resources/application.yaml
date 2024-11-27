@@ -1,6 +1,6 @@
 spring:
   application:
-    name: github-concat
+    name: content-generator
 
 gg:
   jte:

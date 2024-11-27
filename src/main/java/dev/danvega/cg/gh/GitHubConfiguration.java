@@ -1,4 +1,4 @@
-package dev.danvega.gh;
+package dev.danvega.cg.gh;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
