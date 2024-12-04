@@ -55,12 +55,19 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
 				<groupId>org.graalvm.buildtools</groupId>
 				<artifactId>native-maven-plugin</artifactId>
 				<configuration>
 					<buildArgs>
 						<buildArg>--initialize-at-build-time=org.springframework.util.ResourceUtils</buildArg>
 					</buildArgs>
+					<environment>
+						<SPRING_PROFILES_ACTIVE>prod</SPRING_PROFILES_ACTIVE>
+					</environment>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -82,10 +89,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

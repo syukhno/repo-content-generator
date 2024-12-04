@@ -13,9 +13,7 @@ public class ResourceBundleRuntimeHints implements RuntimeHintsRegistrar {
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
         hints.resources()
-                .registerPattern("**/*.bin")
-                .registerPattern("en_US")
-                .registerPattern("messages/*");
+                .registerPattern("**/*.bin");
 
         hints.reflection()
                 .registerType(JtepageGenerated.class, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS)
