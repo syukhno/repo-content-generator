@@ -21,6 +21,7 @@ github:
     - "**/*.yaml"
     - "**/*.yml"
     - "**/*.graphqls"
+    - "**/*.properties"
   excludePatterns:
     - ".mvn/**"
     - ".idea/**"
@@ -29,3 +30,8 @@ github:
     - ".gitattributes"
     - "mvnw"
     - "mvnw.cmd"
+
+logging:
+  level:
+    dev:
+      danvega: debug

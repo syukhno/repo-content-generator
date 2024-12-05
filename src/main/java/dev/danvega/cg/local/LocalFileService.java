@@ -8,25 +8,40 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 public class LocalFileService {
+
     private static final Logger log = LoggerFactory.getLogger(LocalFileService.class);
     private final GitHubConfiguration config;
+    private Path sourceDir;
+    private final List<PathMatcher> includeMatchers;
+    private final List<PathMatcher> excludeMatchers;
 
     public LocalFileService(GitHubConfiguration config) {
         this.config = config;
+        this.includeMatchers = config.includePatterns().stream()
+                .map(pattern -> FileSystems.getDefault().getPathMatcher("glob:" + normalizePattern(pattern)))
+                .collect(Collectors.toList());
+        this.excludeMatchers = config.excludePatterns().stream()
+                .map(pattern -> FileSystems.getDefault().getPathMatcher("glob:" + normalizePattern(pattern)))
+                .collect(Collectors.toList());
     }
 
     public void processLocalDirectory(String directoryPath, String outputFileName) throws IOException {
-        Path sourceDir = Paths.get(directoryPath);
+        sourceDir = Paths.get(directoryPath).normalize().toAbsolutePath();
         if (!Files.exists(sourceDir) || !Files.isDirectory(sourceDir)) {
             throw new IllegalArgumentException("Invalid directory path: " + directoryPath);
         }
 
         StringBuilder contentBuilder = new StringBuilder();
-        processDirectoryRecursively(sourceDir, contentBuilder);
+        try (Stream<Path> paths = Files.walk(sourceDir)) {
+            paths.filter(Files::isRegularFile)
+                    .filter(this::shouldIncludeFile)
+                    .forEach(file -> readFileContent(file, contentBuilder));
+        }
 
         Path outputDir = Paths.get("output");
         Files.createDirectories(outputDir);
@@ -36,41 +51,35 @@ public class LocalFileService {
         log.info("Local directory contents written to: {}", outputFile.toAbsolutePath());
     }
 
-    private void processDirectoryRecursively(Path directory, StringBuilder contentBuilder) throws IOException {
-        try (Stream<Path> paths = Files.walk(directory)) {
-            paths.filter(Files::isRegularFile)
-                    .filter(this::shouldIncludeFile)
-                    .forEach(file -> {
-                        try {
-                            String relativePath = directory.relativize(file).toString();
-                            String content = Files.readString(file);
-                            contentBuilder.append("File: ").append(relativePath).append("\n\n");
-                            contentBuilder.append(content).append("\n\n");
-                        } catch (IOException e) {
-                            log.error("Error reading file: {}", file, e);
-                        }
-                    });
-        }
-    }
-
     private boolean shouldIncludeFile(Path filePath) {
-        String path = filePath.toString();
-
-        if (matchesPatterns(path, config.excludePatterns())) {
-            log.debug("File {} excluded by exclude patterns", path);
+        String relativePath = normalizePath(sourceDir.relativize(filePath));
+        if (excludeMatchers.stream().anyMatch(matcher -> matcher.matches(Paths.get(relativePath)))) {
             return false;
         }
-
-        return matchesPatterns(path, config.includePatterns());
-    }
-
-    private boolean matchesPatterns(String path, List<String> patterns) {
-        if (patterns.isEmpty()) {
-            return patterns == config.excludePatterns();
+        if (includeMatchers.isEmpty()) {
+            return true;
         }
-
-        return patterns.stream()
-                .map(pattern -> FileSystems.getDefault().getPathMatcher("glob:" + pattern.trim()))
-                .anyMatch(matcher -> matcher.matches(Paths.get(path)));
+        return includeMatchers.stream().anyMatch(matcher -> matcher.matches(Paths.get(relativePath)));
     }
+
+    private void readFileContent(Path file, StringBuilder builder) {
+        try {
+            String relativePath = sourceDir.relativize(file).toString();
+            String content = Files.readString(file);
+            builder.append("File: ").append(relativePath).append("\n\n")
+                    .append(content).append("\n\n");
+        } catch (IOException e) {
+            log.error("Error reading file: {}", file, e);
+        }
+    }
+
+    private String normalizePattern(String pattern) {
+        return pattern.trim()
+                .replace('\\', '/');
+    }
+
+    private String normalizePath(Path path) {
+        return path.toString().replace('\\', '/');
+    }
+
 }
