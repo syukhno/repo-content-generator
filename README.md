@@ -143,19 +143,3 @@ To avoid rate limiting issues:
 
 You can check your current rate limit status by calling:
 `https://api.github.com/rate_limit`
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to your branch
-5. Create a Pull Request
-
-## License
-
-[Add your license information here]
-
-## Support
-
-For issues and feature requests, please use the GitHub issue tracker.
