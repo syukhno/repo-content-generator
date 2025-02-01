@@ -30,6 +30,8 @@ github:
     - ".gitattributes"
     - "mvnw"
     - "mvnw.cmd"
+    - "CLIENT_ID"
+    - "HELP.md"
 
 logging:
   level:
